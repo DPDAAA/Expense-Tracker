@@ -1,0 +1,19 @@
+@startuml Klasse1
+class Transaction {
+    - id : int
+    - description : String
+    - type : enum
+    - sum : Double
+
+}
+
+class TransactionContainer {
+
+    - id : int
+    +addTransaction(item : Transaction)
+    +deleteTransaction(item : Transaction)
+}
+
+
+TransactionContainer "1" *-- "0..*" Transaction : enthält >
+@enduml

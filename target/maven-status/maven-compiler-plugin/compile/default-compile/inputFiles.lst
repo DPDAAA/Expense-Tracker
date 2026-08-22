@@ -1,0 +1,8 @@
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\Main.java
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\model\Transaction.java
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\model\TransactionContainer.java
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\model\Type.java
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\service\TransactionManager.java
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\storage\TransactionFileStorage.java
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\ui\console\TransactionUserInput.java
+D:\Expense-Tracker\First-ProjectV2\src\main\java\tracker\ui\gui\TrackerApp.java
