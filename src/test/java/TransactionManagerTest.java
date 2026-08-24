@@ -1,3 +1,9 @@
+import java.io.ByteArrayOutputStream;
+import java.io.PrintStream;
+
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -5,11 +11,6 @@ import tracker.model.Transaction;
 import tracker.model.TransactionContainer;
 import tracker.model.Type;
 import tracker.service.TransactionManager;
-
-import java.io.ByteArrayOutputStream;
-import java.io.PrintStream;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 class TransactionManagerTest {
 
@@ -24,7 +25,7 @@ class TransactionManagerTest {
 
     @Test
     void addTransaction_legtNeueTransaktionImContainerAn() {
-        manager.addTransaction(container, "Kaffee", Type.AUSGABE, 3.5);
+        manager.addTransaction("Kaffee", Type.AUSGABE, 3.5);
 
         int count = 0;
         for (Transaction t : container) {
@@ -38,14 +39,14 @@ class TransactionManagerTest {
 
     @Test
     void deleteTransaction_gibtErfolgsmeldungBeiVorhandenerId() {
-        manager.addTransaction(container, "Test", Type.AUSGABE, 5.0);
+        manager.addTransaction("Test", Type.AUSGABE, 5.0);
         int id = container.iterator().next().getId();
 
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream original = System.out;
         System.setOut(new PrintStream(out));
         try {
-            manager.deleteTransaction(container, id);
+            manager.deleteTransaction( id);
         } finally {
             System.setOut(original);
         }
@@ -60,7 +61,7 @@ class TransactionManagerTest {
         PrintStream original = System.out;
         System.setOut(new PrintStream(out));
         try {
-            manager.deleteTransaction(container, -1);
+            manager.deleteTransaction( -1);
         } finally {
             System.setOut(original);
         }
@@ -70,7 +71,7 @@ class TransactionManagerTest {
 
     @Test
     void transactionHistory_druckVerlaufOhneFehler() {
-        manager.addTransaction(container, "Test", Type.AUSGABE, 5.0);
+        manager.addTransaction( "Test", Type.AUSGABE, 5.0);
 
         // Wir prüfen hier nur, dass die Ausgabe nicht crasht und
         // die Beschreibung im Verlauf auftaucht - reine Konsolenausgabe
@@ -79,7 +80,7 @@ class TransactionManagerTest {
         PrintStream original = System.out;
         System.setOut(new PrintStream(out));
         try {
-            manager.TransactionHistory(container);
+            manager.TransactionHistory();
         } finally {
             System.setOut(original);
         }

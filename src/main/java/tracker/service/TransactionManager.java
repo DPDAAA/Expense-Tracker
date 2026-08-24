@@ -1,4 +1,5 @@
 package tracker.service;
+
 import tracker.model.Transaction;
 import tracker.model.TransactionContainer;
 import tracker.model.Type;
@@ -6,30 +7,36 @@ import tracker.storage.TransactionFileStorage;
 
 public class TransactionManager {
 
-    public void TransactionHistory(TransactionContainer Container) {
+    private static final String FILE_PATH = "Speicher.txt";
+    private TransactionContainer container;
+
+    public void TransactionHistory() {
 
         System.out.println("---Verlauf---");
-        Container.forEach(t -> System.out.println(t));
+        this.container.forEach(t -> System.out.println(t));
     }
 
-    public void addTransaction(TransactionContainer Container, String description, Type type, double sum) {
+    public TransactionManager() {
+        this.container = TransactionFileStorage.loadTransactions(FILE_PATH);
+    }
+
+    public void addTransaction(String description, Type type, double sum) {
 
         Transaction transaction = new Transaction(description, type, sum);
-        Container.addTransaction(transaction);
+        this.container.addTransaction(transaction);
 
     }
 
-    public boolean deleteTransaction(TransactionContainer Container, int id) {
+    public boolean deleteTransaction(int id) {
 
-        return Container.deleteById(id);
+        return this.container.deleteById(id);
 
     }
 
-    public void saveTransactions(TransactionContainer Container, String dateiPfad) {
-        TransactionFileStorage.saveTransactions(Container, dateiPfad);
+    public void saveTransactions() {
+        TransactionFileStorage.saveTransactions(this.container, FILE_PATH);
         System.out.println("---Erfolgreich gespeichert!---");
 
     }
-
 
 }

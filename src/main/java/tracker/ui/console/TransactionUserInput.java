@@ -3,10 +3,8 @@ package tracker.ui.console;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
-import tracker.model.TransactionContainer;
 import tracker.model.Type;
 import tracker.service.TransactionManager;
-import tracker.storage.TransactionFileStorage;
 
 public class TransactionUserInput {
 
@@ -118,7 +116,6 @@ public class TransactionUserInput {
 
     public void startConsoleMenu() {
 
-        TransactionContainer Container = TransactionFileStorage.loadTransactions("Speicher.txt");
         TransactionManager manager = new TransactionManager();
         TransactionUserInput user = new TransactionUserInput();
 
@@ -134,17 +131,17 @@ public class TransactionUserInput {
             switch (user.inputSwitch()) {
 
                 case 'g':
-                    manager.TransactionHistory(Container);
+                    manager.TransactionHistory();
                     break;
                 case 'h':
-                    manager.addTransaction(Container, user.inputDescription(), user.inputType(), user.inputSum());
+                    manager.addTransaction(user.inputDescription(), user.inputType(), user.inputSum());
                     System.out.println("---Transaktion erfolgreich hinzugefügt!");
                     modified = false;
                     break;
                 case 'j':
 
                     int id = user.inputTransactionId();
-                    boolean deleted = manager.deleteTransaction(Container, id);
+                    boolean deleted = manager.deleteTransaction(id);
                     if (deleted) {
                         System.out.println("Transaktion mit ID: " + id + " wurde gelöscht!");
                         modified = false;
@@ -154,7 +151,7 @@ public class TransactionUserInput {
                     break;
 
                 case 'q':
-                    manager.saveTransactions(Container, "Speicher.txt");
+                    manager.saveTransactions();
                     modified = true;
                     break;
 
