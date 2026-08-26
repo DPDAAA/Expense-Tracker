@@ -41,12 +41,9 @@ public class TrackerApp extends Application {
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));
 
-        // 1. Die Tabelle erstellen
         TableView<Transaction> table = new TableView<>();
-        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY); // Spalten füllen den Platz automatisch aus
+        table.setColumnResizePolicy(TableView.CONSTRAINED_RESIZE_POLICY);
 
-        // 2. Spalten definieren (Die Strings in PropertyValueFactory MÜSSEN den
-        // Attributnamen in Transaction entsprechen!)
         TableColumn<Transaction, String> descCol = new TableColumn<>("Beschreibung");
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
 
@@ -56,17 +53,12 @@ public class TrackerApp extends Application {
         TableColumn<Transaction, Double> sumCol = new TableColumn<>("Betrag (€)");
         sumCol.setCellValueFactory(new PropertyValueFactory<>("sum"));
 
-        // Spalten zur Tabelle hinzufügen
         table.getColumns().addAll(descCol, typeCol, sumCol);
 
-        // 3. Daten aus dem Manager in die Tabelle laden
-        // (Setzt voraus, dass du in TransactionManager eine getContainer() Methode
-        // hast)
         if (manager.getContainer() != null) {
             table.getItems().addAll(manager.getContainer());
         }
 
-        // Überschrift für die Tabelle
         Label tableTitle = new Label("Transaktionshistorie");
         tableTitle.setStyle("-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #333333;");
 
@@ -74,7 +66,6 @@ public class TrackerApp extends Application {
         history.setAlignment(Pos.CENTER_LEFT);
         root.setCenter(history);
 
-        // Unten: Aktionsleiste (HBox ordnet Buttons nebeneinander an)
         HBox actionBar = new HBox(15);
         actionBar.setAlignment(Pos.CENTER);
         actionBar.setPadding(new Insets(20, 0, 0, 0));
@@ -83,10 +74,50 @@ public class TrackerApp extends Application {
         addButton.setStyle("-fx-base: #4CAF50; -fx-text-fill: white; -fx-font-weight: bold;"); // Grüner Button
 
         Button refreshButton = new Button("Aktualisieren");
-
-        actionBar.getChildren().addAll(addButton, refreshButton);
+        refreshButton.setStyle("-fx-base: #2900e2; -fx-text-fill: white;");
+        Button deleteButton = new Button("Löschen");
+        deleteButton.setStyle("-fx-base: #f44336; -fx-text-fill: white;");
+        actionBar.getChildren().addAll(addButton, deleteButton ,refreshButton);
         root.setBottom(actionBar);
 
+        refreshButton.setOnAction(e -> {
+            if (manager.getContainer() != null) {
+                table.getItems().clear();
+                table.getItems().addAll(manager.getContainer());
+            }
+
+        });
+
+        deleteButton.setOnAction(e -> {
+            
+            Transaction selectedTransaction = table.getSelectionModel().getSelectedItem();
+
+            if (selectedTransaction == null) {
+                
+                showErrorAlert("Keine Auswahl", "Nichts ausgewählt",
+                        "Bitte klicke zuerst auf eine Transaktion in der Tabelle.");
+                return;
+            }
+
+            
+            Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+            confirmAlert.setTitle("Transaktion löschen");
+            confirmAlert.setHeaderText("Bist du sicher?");
+            confirmAlert.setContentText("Möchtest du '" + selectedTransaction.getDescription() + "' wirklich löschen?");
+
+            
+            confirmAlert.showAndWait().ifPresent(response -> {
+                if (response == javafx.scene.control.ButtonType.OK) {
+
+                 
+                    manager.deleteTransaction(selectedTransaction.getId());
+                    manager.saveTransactions();
+
+                    
+                    table.getItems().remove(selectedTransaction);
+                }
+            });
+        });
         // Event: Klick öffnet das Pop-up
         addButton.setOnAction(e -> openAddTransactionWindow());
 
