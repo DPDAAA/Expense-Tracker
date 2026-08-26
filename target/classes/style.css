@@ -1,0 +1,51 @@
+
+.root {
+    -fx-background-color: #f4f6f8;
+    -fx-font-family: "Segoe UI", Arial, sans-serif;
+}
+
+
+.table-view {
+    -fx-background-color: white;
+    -fx-border-color: #e0e0e0;
+    -fx-border-radius: 5px;
+    -fx-background-radius: 5px;
+    -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.1), 10, 0, 0, 5);
+}
+
+.table-view .column-header-background {
+    -fx-background-color: #ffffff;
+    -fx-border-bottom-color: #e0e0e0;
+}
+
+.table-view .column-header {
+    -fx-background-color: transparent;
+    -fx-padding: 10px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: #555555;
+    -fx-font-weight: bold;
+}
+
+
+.table-row-cell {
+    -fx-cell-size: 40px; 
+    -fx-border-color: transparent transparent #f0f0f0 transparent;
+}
+
+
+.table-row-cell:odd {
+    -fx-background-color: #fafafa;
+}
+
+
+.table-row-cell:hover {
+    -fx-background-color: #e3f2fd; 
+}
+
+
+.table-row-cell:selected {
+    -fx-background-color: #bbdefb;
+    -fx-text-fill: black;
+}

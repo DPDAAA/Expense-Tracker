@@ -1,5 +1,7 @@
 package tracker.service;
 
+import java.util.List;
+
 import tracker.model.Transaction;
 import tracker.model.TransactionContainer;
 import tracker.model.Type;
@@ -37,6 +39,11 @@ public class TransactionManager {
         TransactionFileStorage.saveTransactions(this.container, FILE_PATH);
         System.out.println("---Erfolgreich gespeichert!---");
 
+    }
+
+    public List<Transaction> getContainer() {
+
+        return this.container.getTransactions();
     }
 
 }
