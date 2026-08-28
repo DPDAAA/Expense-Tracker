@@ -1,3 +1,4 @@
+package model;
 import org.junit.jupiter.api.Test;
 
 import tracker.model.Type;

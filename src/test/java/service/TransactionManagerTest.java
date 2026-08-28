@@ -1,3 +1,4 @@
+package service;
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
 
@@ -73,9 +74,7 @@ class TransactionManagerTest {
     void transactionHistory_druckVerlaufOhneFehler() {
         manager.addTransaction( "Test", Type.AUSGABE, 5.0);
 
-        // Wir prüfen hier nur, dass die Ausgabe nicht crasht und
-        // die Beschreibung im Verlauf auftaucht - reine Konsolenausgabe
-        // ist sonst schwer sinnvoll zu testen (siehe Feedback zur Architektur).
+
         ByteArrayOutputStream out = new ByteArrayOutputStream();
         PrintStream original = System.out;
         System.setOut(new PrintStream(out));

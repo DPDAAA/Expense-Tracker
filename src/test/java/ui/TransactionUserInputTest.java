@@ -1,3 +1,4 @@
+package ui;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -10,11 +11,7 @@ import java.nio.charset.StandardCharsets;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-/**
- * TransactionUserInput liest über einen Scanner direkt von System.in.
- * Um das ohne echte Tastatureingabe zu testen, ersetzen wir System.in
- * vor jedem Test durch simulierte Eingaben.
- */
+
 class TransactionUserInputTest {
 
     private final InputStream echterSystemIn = System.in;

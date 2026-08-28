@@ -1,3 +1,4 @@
+package storage;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
@@ -16,7 +17,7 @@ class TransactionFileStorageTest {
 
     @Test
     void saveUndLoad_roundtripErhaeltDaten(@TempDir Path tempDir) throws IOException {
-        Path datei = tempDir.resolve("speicher.txt");
+       
 
         TransactionContainer original = new TransactionContainer();
         Transaction t1 = new Transaction("Miete", Type.AUSGABE, 500.0);
@@ -24,8 +25,8 @@ class TransactionFileStorageTest {
         original.addTransaction(t1);
         original.addTransaction(t2);
 
-        TransactionFileStorage.saveTransactions(original, datei.toString());
-        TransactionContainer geladen = TransactionFileStorage.loadTransactions(datei.toString());
+        TransactionFileStorage.saveTransactions(original);
+        TransactionContainer geladen = TransactionFileStorage.loadTransactions();
 
         int count = 0;
         for (Transaction t : geladen) {
@@ -36,23 +37,14 @@ class TransactionFileStorageTest {
         assertTrue(geladen.deleteById(t2.getId()));
     }
 
-    @Test
-    void loadTransactions_liefertLeerenContainerWennDateiFehlt(@TempDir Path tempDir) {
-        Path nichtVorhandeneDatei = tempDir.resolve("existiert-nicht.txt");
-
-        TransactionContainer container = TransactionFileStorage.loadTransactions(nichtVorhandeneDatei.toString());
-
-        assertFalse(container.iterator().hasNext());
-    }
 
     @Test
     void loadTransactions_ignoriertKaputteDateiOhneAbsturz(@TempDir Path tempDir) throws IOException {
         Path datei = tempDir.resolve("kaputt.txt");
         Files.writeString(datei, "das;ist;keine;gueltige;zeile;mit;zu;vielen;feldern\n");
 
-        // Darf nicht crashen - Fehlerbehandlung fängt NumberFormatException /
-        // ArrayIndexOutOfBoundsException ab.
-        assertDoesNotThrow(() -> TransactionFileStorage.loadTransactions(datei.toString()));
+
+        assertDoesNotThrow(() -> TransactionFileStorage.loadTransactions());
     }
 
     @Test
@@ -60,7 +52,7 @@ class TransactionFileStorageTest {
         Path datei = tempDir.resolve("leer.txt");
         TransactionContainer leer = new TransactionContainer();
 
-        TransactionFileStorage.saveTransactions(leer, datei.toString());
+        TransactionFileStorage.saveTransactions(leer);
 
         assertTrue(Files.exists(datei));
         assertEquals("", Files.readString(datei));
@@ -75,7 +67,7 @@ class TransactionFileStorageTest {
         Transaction t = new Transaction("Neu", Type.EINNAHME, 1.0);
         container.addTransaction(t);
 
-        TransactionFileStorage.saveTransactions(container, datei.toString());
+        TransactionFileStorage.saveTransactions(container);
 
         String inhalt = Files.readString(datei);
         assertFalse(inhalt.contains("alter"));

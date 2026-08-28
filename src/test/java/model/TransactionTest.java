@@ -1,3 +1,4 @@
+package model;
 import org.junit.jupiter.api.Test;
 
 import tracker.model.Transaction;
@@ -21,8 +22,7 @@ class TransactionTest {
         Transaction t1 = new Transaction("A", Type.EINNAHME, 10.0);
         Transaction t2 = new Transaction("B", Type.EINNAHME, 20.0);
 
-        // Wir kennen die absoluten IDs nicht (nextID ist statisch und wird
-        // von anderen Tests mit hochgezählt), aber t2 muss auf t1 folgen.
+
         assertEquals(t1.getId() + 1, t2.getId());
     }
 
@@ -78,9 +78,7 @@ class TransactionTest {
         Transaction t1 = new Transaction(1, "A", Type.AUSGABE, 1.0);
         Transaction t2 = new Transaction(1, "B", Type.EINNAHME, 2.0);
 
-        // equals() vergleicht laut Implementierung NUR die id,
-        // deshalb sind diese beiden Objekte trotz unterschiedlicher
-        // description/type/sum "gleich".
+
         assertEquals(t1, t2);
     }
 
