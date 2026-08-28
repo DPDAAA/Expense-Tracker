@@ -1,1 +1,3 @@
-0;asd;AUSGABE;25.0
+6;1€ for each Problem found  in tihs Code;EINNAHME;100.0
+7;1€ for each resolved Problem in this Code (hopefully);AUSGABE;100.0
+8;Unkown;AUSGABE;50.0

@@ -119,9 +119,9 @@ public class TransactionUserInput {
         TransactionManager manager = new TransactionManager();
         TransactionUserInput user = new TransactionUserInput();
 
-        System.out.println("---g: für Ausgabe des Verlaufs---");
-        System.out.println("---h: für die Hinzugabe einer Transaktion---");
-        System.out.println("---j: für das Löschen einer Transaktion---");
+        System.out.println("---g: fuer Ausgabe des Verlaufs---");
+        System.out.println("---h: fuer die Hinzugabe einer Transaktion---");
+        System.out.println("---j: fuer das Loeschen einer Transaktion---");
         System.out.println("---q: Speichern der Transaktionen---");
         System.out.println("---k: Beenden des Programms---");
         boolean modified = false;
