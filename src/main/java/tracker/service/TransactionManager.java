@@ -46,4 +46,15 @@ public class TransactionManager {
         return this.container.getTransactions();
     }
 
+    public double getTotal(Type type) {
+        double total = 0;
+
+    for (Transaction t : this.container) {
+        if(t.getType() == type) {
+            total += t.getSum();
+        }
+    }
+    return total;
+    }
+
 }

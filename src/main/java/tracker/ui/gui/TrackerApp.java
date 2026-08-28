@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import tracker.model.Transaction;
@@ -16,11 +17,10 @@ import tracker.service.TransactionManager;
 
 public class TrackerApp extends Application {
 
-    
     private TransactionManager manager = new TransactionManager();
     private TransactionTable table = new TransactionTable();
+    private MyPieChart pieChart = new MyPieChart(manager);
 
-    
     private void showErrorAlert(String title, String header, String content) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle(title);
@@ -29,13 +29,22 @@ public class TrackerApp extends Application {
         alert.showAndWait();
     }
 
+    private void updateDashboard() {
+
+        if (manager.getContainer() != null) {
+            table.getItems().clear();
+            table.getItems().addAll(manager.getContainer());
+        }
+
+        pieChart.updateChart(manager);
+    }
+
     @Override
     public void start(Stage primaryStage) {
-        
+
         BorderPane root = new BorderPane();
         root.setPadding(new Insets(20));
 
-        
         if (manager.getContainer() != null) {
             table.getItems().addAll(manager.getContainer());
         }
@@ -45,9 +54,11 @@ public class TrackerApp extends Application {
 
         VBox history = new VBox(10, tableTitle, table);
         history.setAlignment(Pos.CENTER_LEFT);
-        root.setCenter(history);
 
-        
+        HBox centerView = new HBox(30, history, pieChart);
+        HBox.setHgrow(history, Priority.ALWAYS);
+        root.setCenter(centerView);
+
         HBox actionBar = new HBox(15);
         actionBar.setAlignment(Pos.CENTER);
         actionBar.setPadding(new Insets(20, 0, 0, 0));
@@ -64,15 +75,8 @@ public class TrackerApp extends Application {
         actionBar.getChildren().addAll(addButton, deleteButton, refreshButton);
         root.setBottom(actionBar);
 
-  
-        refreshButton.setOnAction(e -> {
-            if (manager.getContainer() != null) {
-                table.getItems().clear();
-                table.getItems().addAll(manager.getContainer());
-            }
-        });
+        refreshButton.setOnAction(e -> updateDashboard());
 
-    
         deleteButton.setOnAction(e -> {
             Transaction selectedTransaction = table.getSelectionModel().getSelectedItem();
 
@@ -91,7 +95,7 @@ public class TrackerApp extends Application {
                 if (response == javafx.scene.control.ButtonType.OK) {
                     manager.deleteTransaction(selectedTransaction.getId());
                     manager.saveTransactions();
-                    table.getItems().remove(selectedTransaction);
+                    updateDashboard();
                 }
             });
         });
@@ -101,8 +105,8 @@ public class TrackerApp extends Application {
             AddTransactionWindow addWindow = new AddTransactionWindow(manager);
 
             addWindow.showAndWait();
+            updateDashboard();
 
-            
             if (manager.getContainer() != null) {
                 table.getItems().clear();
                 table.getItems().addAll(manager.getContainer());

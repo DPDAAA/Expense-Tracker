@@ -1,2 +1,1 @@
-1;simon ist cool;EINNAHME;1.0
-2;hall;AUSGABE;123.0
+0;asd;AUSGABE;25.0

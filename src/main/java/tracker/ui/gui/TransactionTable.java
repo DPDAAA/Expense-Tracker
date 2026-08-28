@@ -13,12 +13,17 @@ public class TransactionTable extends TableView<Transaction> {
 
         TableColumn<Transaction, String> descCol = new TableColumn<>("Beschreibung");
         descCol.setCellValueFactory(new PropertyValueFactory<>("description"));
-
+        descCol.setMinWidth(150);
+        descCol.setPrefWidth(250);
         TableColumn<Transaction, Type> typeCol = new TableColumn<>("Typ");
         typeCol.setCellValueFactory(new PropertyValueFactory<>("type"));
+        typeCol.setMinWidth(100);
+        typeCol.setMaxWidth(150);
 
         TableColumn<Transaction, Double> sumCol = new TableColumn<>("Betrag (€)");
         sumCol.setCellValueFactory(new PropertyValueFactory<>("sum"));
+        sumCol.setMinWidth(100);
+        sumCol.setMaxWidth(150);
 
         this.getColumns().addAll(descCol, typeCol, sumCol);
 
