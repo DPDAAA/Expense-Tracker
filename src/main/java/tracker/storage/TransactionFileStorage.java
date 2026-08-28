@@ -12,9 +12,9 @@ import tracker.model.Type;
 
 public class TransactionFileStorage {
 
-    public static void saveTransactions(TransactionContainer p, String dateiPfad) {
+    public static void saveTransactions(TransactionContainer p) {
         System.out.println("Speichervorgang...");
-        Path pfad = Path.of(dateiPfad);
+        final Path pfad = Path.of("data", "Speicher.txt");
 
         try {
 
@@ -36,10 +36,10 @@ public class TransactionFileStorage {
         }
     }
 
-    public static TransactionContainer loadTransactions(String dateiPfad) {
+    public static TransactionContainer loadTransactions() {
 
         TransactionContainer Container = new TransactionContainer();
-        Path pfad = Path.of(dateiPfad);
+        Path pfad = Path.of("data", "Speicher.txt");
         if (!Files.exists(pfad)) {
             System.out.println("Keine Speicherdatei gefunden. Starte mit leerem Container");
             return Container;

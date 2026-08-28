@@ -1,19 +1,99 @@
-@startuml Klasse1
-class Transaction {
-    - id : int
-    - description : String
-    - type : enum
-    - sum : Double
+@startuml ExpenseTracker
+skinparam classAttributeIconSize 0
 
+package tracker.model {
+    enum Type {
+        EINNAHME
+        AUSGABE
+    }
+
+    class Transaction {
+        - id : int
+        - description : String
+        - type : Type
+        - sum : double
+        + getId() : int
+        + getDescription() : String
+        + getType() : Type
+        + getSum() : double
+    }
+
+    class TransactionContainer {
+        - id : int
+        - transactions : List<Transaction>
+        + addTransaction(item : Transaction)
+        + deleteTransaction(item : Transaction)
+        + getTransactions() : List<Transaction>
+    }
 }
 
-class TransactionContainer {
+package tracker.storage {
+    class TransactionFileStorage {
+        - filePath : Path
+        + save(transactions : List<Transaction>)
+        + load() : List<Transaction>
+    }
+}
 
-    - id : int
-    +addTransaction(item : Transaction)
-    +deleteTransaction(item : Transaction)
+package tracker.service {
+    class TransactionManager {
+        - container : TransactionContainer
+        - storage : TransactionFileStorage
+        + addTransaction(description : String, type : Type, sum : double)
+        + deleteTransaction(item : Transaction)
+        + getTransactions() : List<Transaction>
+        + save()
+        + load()
+    }
+}
+
+package tracker.ui.gui {
+    class TrackerApp {
+        - manager : TransactionManager
+        + start(primaryStage : Stage)
+        + main(args : String[])
+    }
+
+    class AddTransactionWindow {
+        - manager : TransactionManager
+        + display()
+    }
+
+    class MyPieChart {
+        - manager : TransactionManager
+        + updateChart()
+    }
+
+    class TransactionTable {
+        - manager : TransactionManager
+        + updateTable()
+    }
+}
+
+package tracker.ui.console {
+    class TransactionUserInput {
+        - manager : TransactionManager
+        + startConsoleUI()
+    }
 }
 
 
 TransactionContainer "1" *-- "0..*" Transaction : enthält >
+Transaction "1" o-- "1" Type : hat >
+
+TransactionManager "1" o-- "1" TransactionContainer : verwaltet >
+TransactionManager "1" o-- "1" TransactionFileStorage : nutzt für Persistenz >
+
+
+TrackerApp ..> TransactionManager : initialisiert >
+TrackerApp ..> AddTransactionWindow : öffnet >
+TrackerApp ..> MyPieChart : rendert >
+TrackerApp ..> TransactionTable : rendert >
+
+AddTransactionWindow ..> TransactionManager : sendet neue Daten >
+MyPieChart ..> TransactionManager : liest Daten für Grafik >
+TransactionTable ..> TransactionManager : liest Daten für Tabelle >
+
+TransactionUserInput ..> TransactionManager : Konsolen-Fallback >
+
 @enduml

@@ -9,7 +9,6 @@ import tracker.storage.TransactionFileStorage;
 
 public class TransactionManager {
 
-    private static final String FILE_PATH = "Speicher.txt";
     private TransactionContainer container;
 
     public void TransactionHistory() {
@@ -19,7 +18,7 @@ public class TransactionManager {
     }
 
     public TransactionManager() {
-        this.container = TransactionFileStorage.loadTransactions(FILE_PATH);
+        this.container = TransactionFileStorage.loadTransactions();
     }
 
     public void addTransaction(String description, Type type, double sum) {
@@ -36,7 +35,7 @@ public class TransactionManager {
     }
 
     public void saveTransactions() {
-        TransactionFileStorage.saveTransactions(this.container, FILE_PATH);
+        TransactionFileStorage.saveTransactions(this.container);
         System.out.println("---Erfolgreich gespeichert!---");
 
     }
